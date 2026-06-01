@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { PanelLeftClose, PanelLeftOpen, Loader2 } from 'lucide-react'
 import api from '../services/api'
 
-export default function Sidebar({ onSelectSession, refreshKey }) {
+export default function Sidebar({ onSelectSession, refreshKey, activeSessionId }) {
   const [sessions, setSessions] = useState([])
   const [carregando, setCarregando] = useState(true)
   const [collapsed, setCollapsed] = useState(false)
@@ -32,10 +32,15 @@ export default function Sidebar({ onSelectSession, refreshKey }) {
   const { hoje, ultimos7, historico } = groupSessions()
 
   function SessionItem({ session }) {
+    const isActive = session.id === activeSessionId
     return (
       <div
         onClick={() => onSelectSession(session)}
-        className="px-3 py-1.5 text-sm text-gray-400 hover:text-white hover:bg-[#1a1d27] rounded cursor-pointer truncate transition"
+        className={`px-3 py-1.5 text-sm rounded cursor-pointer truncate transition
+          ${isActive
+            ? 'bg-[#1a1d27] text-white border-l-2 border-[#00bcd4]'
+            : 'text-gray-400 hover:text-white hover:bg-[#1a1d27]'
+          }`}
       >
         {session.title || session.agent_type}
       </div>
