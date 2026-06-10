@@ -44,26 +44,26 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#13151f]">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)]">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onSelectSession={handleSelectSession} />
         <main className="flex-1 flex flex-col p-10">
-          <h1 className="text-white text-2xl font-semibold mb-6">Escolha o seu assistente</h1>
+          <h1 className="text-[var(--text-primary)] text-2xl font-semibold mb-6">Escolha o seu assistente</h1>
 
           <div className="relative w-full max-w-2xl mb-8">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
             <input
               type="text"
               value={busca}
               onChange={e => setBusca(e.target.value)}
               placeholder="Buscar assistente"
-              className="w-full bg-[#1a1d27] text-white placeholder-gray-500 rounded-xl pl-10 pr-4 py-3 outline-none border border-gray-700 focus:border-[#00bcd4] transition text-sm"
+              className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-10 pr-4 py-3 outline-none border border-[var(--border)] focus:border-[#00bcd4] transition text-sm"
             />
           </div>
 
           {agentesFiltrados.length === 0 ? (
-            <p className="text-gray-500 text-sm">Nenhum assistente encontrado.</p>
+            <p className="text-[var(--text-muted)] text-sm">Nenhum assistente encontrado.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
               {agentesFiltrados.map(agent => (

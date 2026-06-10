@@ -38,8 +38,8 @@ export default function Sidebar({ onSelectSession, refreshKey, activeSessionId }
         onClick={() => onSelectSession(session)}
         className={`px-3 py-1.5 text-sm rounded cursor-pointer truncate transition
           ${isActive
-            ? 'bg-[#1a1d27] text-white border-l-2 border-[#00bcd4]'
-            : 'text-gray-400 hover:text-white hover:bg-[#1a1d27]'
+            ? 'bg-[var(--bg-card)] text-[var(--text-primary)] border-l-2 border-[#00bcd4]'
+            : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
           }`}
       >
         {session.title || session.agent_type}
@@ -51,24 +51,24 @@ export default function Sidebar({ onSelectSession, refreshKey, activeSessionId }
     if (!items.length) return null
     return (
       <div className="mb-4">
-        <p className="text-xs text-gray-500 px-3 mb-1">{title}</p>
+        <p className="text-xs text-[var(--text-muted)] px-3 mb-1">{title}</p>
         {items.map(s => <SessionItem key={s.id} session={s} />)}
       </div>
     )
   }
 
   return (
-    <div className={`flex flex-col bg-[#0f1117] border-r border-gray-800 transition-all duration-300 ${collapsed ? 'w-12' : 'w-64'}`}>
+    <div className={`flex flex-col bg-[var(--bg-main)] border-r border-[var(--border-subtle)] transition-all duration-300 ${collapsed ? 'w-12' : 'w-64'}`}>
       <div className="flex items-center px-3 py-3 gap-2">
         {!collapsed && (
           <input
             value={busca}
             onChange={e => setBusca(e.target.value)}
             placeholder="Buscar conversa"
-            className="flex-1 bg-transparent text-gray-400 placeholder-gray-600 text-sm outline-none"
+            className="flex-1 bg-transparent text-[var(--text-secondary)] placeholder-[var(--text-muted)] text-sm outline-none"
           />
         )}
-        <button onClick={() => setCollapsed(!collapsed)} className="text-gray-400 hover:text-white transition ml-auto">
+        <button onClick={() => setCollapsed(!collapsed)} className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition ml-auto">
           {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
         </button>
       </div>
@@ -76,10 +76,10 @@ export default function Sidebar({ onSelectSession, refreshKey, activeSessionId }
         <div className="flex-1 overflow-y-auto px-1 py-2">
           {carregando ? (
             <div className="flex justify-center py-8">
-              <Loader2 size={18} className="text-gray-500 animate-spin" />
+              <Loader2 size={18} className="text-[var(--text-muted)] animate-spin" />
             </div>
           ) : sessions.length === 0 ? (
-            <p className="text-gray-600 text-xs text-center px-3 py-6">
+            <p className="text-[var(--text-muted)] text-xs text-center px-3 py-6">
               Nenhuma conversa ainda.
             </p>
           ) : (

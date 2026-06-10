@@ -22,44 +22,44 @@ const mdComponents = {
     }
     return (
       <a href={href} target="_blank" rel="noopener noreferrer"
-        className="text-[#00bcd4] underline hover:text-white transition break-all">
+        className="text-[var(--text-accent)] underline hover:opacity-80 transition break-all">
         {children}
       </a>
     )
   },
-  h1: ({ children }) => <h1 className="text-xl font-bold text-white mt-4 mb-2 first:mt-0">{children}</h1>,
-  h2: ({ children }) => <h2 className="text-lg font-bold text-white mt-3 mb-2 first:mt-0">{children}</h2>,
-  h3: ({ children }) => <h3 className="text-base font-semibold text-white mt-3 mb-1 first:mt-0">{children}</h3>,
-  h4: ({ children }) => <h4 className="text-sm font-semibold text-white mt-2 mb-1">{children}</h4>,
+  h1: ({ children }) => <h1 className="text-xl font-bold text-[var(--text-primary)] mt-4 mb-2 first:mt-0">{children}</h1>,
+  h2: ({ children }) => <h2 className="text-lg font-bold text-[var(--text-primary)] mt-3 mb-2 first:mt-0">{children}</h2>,
+  h3: ({ children }) => <h3 className="text-base font-semibold text-[var(--text-primary)] mt-3 mb-1 first:mt-0">{children}</h3>,
+  h4: ({ children }) => <h4 className="text-sm font-semibold text-[var(--text-primary)] mt-2 mb-1">{children}</h4>,
   p:  ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
   ul: ({ children }) => <ul className="list-disc list-outside ml-5 mb-2 space-y-0.5">{children}</ul>,
   ol: ({ children }) => <ol className="list-decimal list-outside ml-5 mb-2 space-y-0.5">{children}</ol>,
   li: ({ children }) => <li className="leading-relaxed pl-1">{children}</li>,
-  strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
+  strong: ({ children }) => <strong className="font-semibold text-[var(--text-primary)]">{children}</strong>,
   em: ({ children }) => <em className="italic">{children}</em>,
   code: ({ className, children }) => {
     const isBlock = /language-/.test(className || '')
     return isBlock
-      ? <code className="text-sm font-mono text-gray-300">{children}</code>
-      : <code className="bg-[#0f1117] text-[#00bcd4] px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
+      ? <code className="text-sm font-mono text-[var(--text-secondary)]">{children}</code>
+      : <code className="bg-[var(--bg-input)] text-[var(--text-accent)] px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
   },
   pre: ({ children }) => (
-    <pre className="bg-[#0f1117] rounded-lg p-3 mb-2 overflow-x-auto text-sm">{children}</pre>
+    <pre className="bg-[var(--bg-input)] rounded-lg p-3 mb-2 overflow-x-auto text-sm">{children}</pre>
   ),
   blockquote: ({ children }) => (
-    <blockquote className="border-l-2 border-[#00bcd4] pl-3 italic text-gray-400 mb-2">{children}</blockquote>
+    <blockquote className="border-l-2 border-[#00bcd4] pl-3 italic text-[var(--text-secondary)] mb-2">{children}</blockquote>
   ),
-  hr: () => <hr className="border-gray-700 my-3" />,
+  hr: () => <hr className="border-[var(--border)] my-3" />,
   table: ({ children }) => (
     <div className="overflow-x-auto mb-2">
       <table className="min-w-full border-collapse text-sm">{children}</table>
     </div>
   ),
-  thead: ({ children }) => <thead className="border-b border-gray-700">{children}</thead>,
-  tbody: ({ children }) => <tbody className="divide-y divide-gray-800">{children}</tbody>,
+  thead: ({ children }) => <thead className="border-b border-[var(--border)]">{children}</thead>,
+  tbody: ({ children }) => <tbody className="divide-y divide-[var(--border-subtle)]">{children}</tbody>,
   tr:   ({ children }) => <tr>{children}</tr>,
-  th:   ({ children }) => <th className="px-3 py-2 text-left font-semibold text-white">{children}</th>,
-  td:   ({ children }) => <td className="px-3 py-2 text-gray-300">{children}</td>,
+  th:   ({ children }) => <th className="px-3 py-2 text-left font-semibold text-[var(--text-primary)]">{children}</th>,
+  td:   ({ children }) => <td className="px-3 py-2 text-[var(--text-secondary)]">{children}</td>,
 }
 
 function MessageContent({ content }) {
@@ -73,6 +73,7 @@ function MessageContent({ content }) {
 export default function ChatPage() {
   const navigate = useNavigate()
   const { currentSessionId, currentAgentType, setCurrentSessionId, setCurrentAgentType } = useStore()
+  const theme = useStore(state => state.theme)
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [enviando, setEnviando] = useState(false)
@@ -91,6 +92,8 @@ export default function ChatPage() {
     TR: 'Termo de Referência',
     ETP: 'Estudo Técnico Preliminar'
   }
+
+  const avatarSrc = theme === 'dark' ? '/avatar-agent.png' : '/avatar-agent-dark.png'
 
   useEffect(() => {
     if (currentSessionId) loadSession()
@@ -171,7 +174,7 @@ export default function ChatPage() {
     const conteudoUsuario = arquivoAtual
       ? `[FILE:${arquivoAtual.name}]\n${mensagemUsuario}`
       : mensagemUsuario
-      
+
     setMessages(prev => [...prev, {
       role: 'user',
       content: mensagemUsuario,
@@ -239,14 +242,14 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-[#13151f]">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)]">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onSelectSession={handleSelectSession} refreshKey={sidebarRefreshKey} activeSessionId={currentSessionId} />
         <main className="flex-1 flex flex-col overflow-hidden">
 
-          <div className="relative flex items-center justify-between px-6 py-3 border-b border-gray-800 bg-[#0f1117]">
-            <button onClick={() => navigate('/home')} className="text-gray-400 hover:text-white transition z-10">
+          <div className="relative flex items-center justify-between px-6 py-3 border-b border-[var(--border-subtle)] bg-[var(--bg-main)]">
+            <button onClick={() => navigate('/home')} className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition z-10">
               <ArrowLeft size={20} />
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
@@ -260,25 +263,25 @@ export default function ChatPage() {
                       if (e.key === 'Enter') handleSaveTitle(tempTitle)
                       if (e.key === 'Escape') setEditingTitle(false)
                     }}
-                    className="bg-transparent text-white font-medium outline-none border-b border-[#00bcd4] text-center min-w-48"
+                    className="bg-transparent text-[var(--text-primary)] font-medium outline-none border-b border-[#00bcd4] text-center min-w-48"
                   />
-                  <button onClick={() => handleSaveTitle(tempTitle)} className="text-green-400 hover:text-green-300 transition">
+                  <button onClick={() => handleSaveTitle(tempTitle)} className="text-green-500 hover:text-green-600 transition">
                     <Check size={16} />
                   </button>
-                  <button onClick={() => setEditingTitle(false)} className="text-gray-500 hover:text-gray-300 transition">
+                  <button onClick={() => setEditingTitle(false)} className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition">
                     <X size={16} />
                   </button>
                 </div>
               ) : (
                 <div className="flex items-center gap-2 cursor-pointer group"
                   onClick={() => { setTempTitle(sessionTitle); setEditingTitle(true) }}>
-                  <h2 className="text-white font-medium">{sessionTitle}</h2>
-                  <Pencil size={14} className="text-gray-500 group-hover:text-gray-300 transition" />
+                  <h2 className="text-[var(--text-primary)] font-medium">{sessionTitle}</h2>
+                  <Pencil size={14} className="text-[var(--text-muted)] group-hover:text-[var(--text-secondary)] transition" />
                 </div>
               )}
             </div>
             <button onClick={() => setModalDeletar(true)}
-              className="text-gray-400 hover:text-red-400 transition p-2 rounded-lg hover:bg-[#1a1d27] z-10">
+              className="text-[var(--text-secondary)] hover:text-red-500 transition p-2 rounded-lg hover:bg-[var(--bg-hover)] z-10">
               <Trash2 size={18} />
             </button>
           </div>
@@ -286,29 +289,29 @@ export default function ChatPage() {
           <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
             {carregando ? (
               <div className="flex justify-center items-center h-full">
-                <p className="text-gray-500 text-sm">Carregando conversa...</p>
+                <p className="text-[var(--text-muted)] text-sm">Carregando conversa...</p>
               </div>
             ) : messages.length === 0 ? (
               <div className="flex justify-center items-center h-full">
-                <p className="text-gray-500 text-sm">Inicie a conversa enviando uma mensagem.</p>
+                <p className="text-[var(--text-muted)] text-sm">Inicie a conversa enviando uma mensagem.</p>
               </div>
             ) : (
               messages.map((msg, i) => (
                 <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'assistant' && (
                     <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 mt-1">
-                      <img src="/avatar-agent.png" alt="LaborAI" className="w-full h-full object-cover" />
+                      <img src={avatarSrc} alt="LaborAI" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div className="max-w-2xl">
                     <div className={`px-4 py-3 rounded-2xl text-base leading-relaxed whitespace-pre-wrap
                       ${msg.role === 'user'
-                        ? 'bg-[#1a1d27] text-white rounded-tr-sm'
-                        : 'bg-[#22263a] text-gray-200 rounded-tl-sm'}`}>
+                        ? 'bg-[var(--bg-msg-user)] text-[var(--text-primary)] rounded-tr-sm'
+                        : 'bg-[var(--bg-msg-ai)] text-[var(--text-secondary)] rounded-tl-sm'}`}>
                       {msg.fileName && (
-                        <div className="flex items-center gap-2 mb-2 bg-[#0f1117]/50 px-3 py-2 rounded-lg border border-gray-700">
-                          <Paperclip size={13} className="text-[#00bcd4] flex-shrink-0" />
-                          <span className="text-[#00bcd4] text-xs truncate">{msg.fileName}</span>
+                        <div className="flex items-center gap-2 mb-2 bg-[var(--bg-input)] px-3 py-2 rounded-lg border border-[var(--border)]">
+                          <Paperclip size={13} className="text-[var(--text-accent)] flex-shrink-0" />
+                          <span className="text-[var(--text-accent)] text-xs truncate">{msg.fileName}</span>
                         </div>
                       )}
                       {msg.content && (
@@ -317,7 +320,7 @@ export default function ChatPage() {
                     </div>
                     {msg.role === 'assistant' && (
                       <button onClick={() => handleCopiar(msg.content)}
-                        className="mt-1 ml-1 text-gray-500 hover:text-gray-300 transition" title="Copiar">
+                        className="mt-1 ml-1 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition" title="Copiar">
                         <Copy size={14} />
                       </button>
                     )}
@@ -329,9 +332,9 @@ export default function ChatPage() {
             {enviando && (
               <div className="flex justify-start gap-3">
                 <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                  <img src="/avatar-agent.png" alt="LaborAI" className="w-full h-full object-cover" />
+                  <img src={avatarSrc} alt="LaborAI" className="w-full h-full object-cover" />
                 </div>
-                <div className="bg-[#22263a] px-4 py-3 rounded-2xl rounded-tl-sm">
+                <div className="bg-[var(--bg-msg-ai)] px-4 py-3 rounded-2xl rounded-tl-sm">
                   <div className="flex gap-1 items-center">
                     <div className="w-2 h-2 bg-[#00bcd4] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                     <div className="w-2 h-2 bg-[#00bcd4] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -343,19 +346,19 @@ export default function ChatPage() {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="px-6 py-4 border-t border-gray-800 bg-[#0f1117]">
+          <div className="px-6 py-4 border-t border-[var(--border-subtle)] bg-[var(--bg-main)]">
             {arquivo && (
-              <div className="flex items-center gap-2 mb-3 bg-[#1a1d27] px-4 py-2 rounded-xl w-fit">
-                <Paperclip size={16} className="text-[#00bcd4]" />
-                <span className="text-gray-300 text-sm">{arquivo.name}</span>
-                <button onClick={() => setArquivo(null)} className="text-gray-500 hover:text-white ml-1">
+              <div className="flex items-center gap-2 mb-3 bg-[var(--bg-card)] px-4 py-2 rounded-xl w-fit border border-[var(--border)]">
+                <Paperclip size={16} className="text-[var(--text-accent)]" />
+                <span className="text-[var(--text-secondary)] text-sm">{arquivo.name}</span>
+                <button onClick={() => setArquivo(null)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] ml-1">
                   <X size={14} />
                 </button>
               </div>
             )}
             <div className="flex items-end gap-3">
               <button onClick={() => fileRef.current.click()}
-                className="text-gray-400 hover:text-[#00bcd4] transition p-2 rounded-xl hover:bg-[#1a1d27] flex-shrink-0"
+                className="text-[var(--text-secondary)] hover:text-[var(--text-accent)] transition p-2 rounded-xl hover:bg-[var(--bg-hover)] flex-shrink-0"
                 title="Anexar arquivo">
                 <Paperclip size={20} />
               </button>
@@ -367,7 +370,7 @@ export default function ChatPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="Faça sua pergunta..."
                 rows={1}
-                className="flex-1 bg-[#1a1d27] text-white placeholder-gray-500 rounded-xl px-4 py-3 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition resize-none"
+                className="flex-1 bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl px-4 py-3 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition resize-none"
                 style={{ minHeight: '44px', maxHeight: '160px' }}
               />
               <button onClick={handleEnviar}
@@ -383,19 +386,19 @@ export default function ChatPage() {
 
       {modalDeletar && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-[#1a1d27] border border-gray-700 rounded-2xl p-8 w-full max-w-sm">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-8 w-full max-w-sm">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
-                <Trash2 size={22} className="text-red-400" />
+                <Trash2 size={22} className="text-red-500" />
               </div>
             </div>
-            <h3 className="text-white text-lg font-semibold text-center mb-2">Excluir conversa</h3>
-            <p className="text-gray-400 text-sm text-center mb-6">
-              Tem certeza que deseja excluir <span className="text-white font-medium">"{sessionTitle}"</span>? Esta ação não pode ser desfeita.
+            <h3 className="text-[var(--text-primary)] text-lg font-semibold text-center mb-2">Excluir conversa</h3>
+            <p className="text-[var(--text-secondary)] text-sm text-center mb-6">
+              Tem certeza que deseja excluir <span className="text-[var(--text-primary)] font-medium">"{sessionTitle}"</span>? Esta ação não pode ser desfeita.
             </p>
             <div className="flex gap-3">
               <button onClick={() => setModalDeletar(false)}
-                className="flex-1 py-2.5 rounded-xl border border-gray-700 text-gray-300 hover:bg-[#22263a] hover:text-white text-sm font-medium transition">
+                className="flex-1 py-2.5 rounded-xl border border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] text-sm font-medium transition">
                 Cancelar
               </button>
               <button onClick={handleDeletarSessao}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, X } from 'lucide-react'
 import supabase from '../services/supabase'
 import useStore from '../store/useStore'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -16,6 +17,7 @@ export default function LoginPage() {
   const [sucessoRecuperar, setSucessoRecuperar] = useState(false)
   const navigate = useNavigate()
   const setAuthToken = useStore(state => state.setAuthToken)
+  const theme = useStore(state => state.theme)
 
   async function handleLogin() {
     setErro('')
@@ -45,19 +47,22 @@ export default function LoginPage() {
 
   return (
     <div className="flex h-screen w-screen">
-      <div className="flex flex-col justify-center w-full max-w-lg px-16 bg-[#0f1117]">
-        <div className="mb-10">
-          <img src="/logo.png" alt="LaborAI" className="h-10" />
+      <div className="flex flex-col justify-center w-full max-w-lg px-16 bg-[var(--bg-main)] relative">
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
         </div>
-        <h1 className="text-white text-3xl font-semibold mb-1">Entrar</h1>
-        <div className="w-16 h-0.5 bg-white mb-6"></div>
-        <p className="text-gray-400 text-sm mb-8">Preencha os campos para acessar a sua conta.</p>
+        <div className="mb-10">
+          <img src={theme === 'dark' ? '/logo.png' : '/logo-dark.png'} alt="LaborAI" className="h-10" />
+        </div>
+        <h1 className="text-[var(--text-primary)] text-3xl font-semibold mb-1">Entrar</h1>
+        <div className="w-16 h-0.5 bg-[var(--text-primary)] mb-6"></div>
+        <p className="text-[var(--text-secondary)] text-sm mb-8">Preencha os campos para acessar a sua conta.</p>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="bg-[#1a1d27] text-white placeholder-gray-500 rounded-full px-6 py-3 mb-4 outline-none border border-transparent focus:border-[#00bcd4] transition"
+          className="bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full px-6 py-3 mb-4 outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
         />
         <div className="relative mb-6">
           <input
@@ -66,26 +71,26 @@ export default function LoginPage() {
             value={senha}
             onChange={e => setSenha(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            className="w-full bg-[#1a1d27] text-white placeholder-gray-500 rounded-full px-6 py-3 outline-none border border-transparent focus:border-[#00bcd4] transition"
+            className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full px-6 py-3 outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
           />
           <button
             onClick={() => setMostrarSenha(!mostrarSenha)}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
           >
             {mostrarSenha ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-        {erro && <p className="text-red-400 text-sm mb-4">{erro}</p>}
+        {erro && <p className="text-red-500 text-sm mb-4">{erro}</p>}
         <button
           onClick={handleLogin}
           disabled={carregando}
-          className="bg-[#2a2d3a] hover:bg-[#353849] text-white rounded-full py-3 font-medium transition mb-4 disabled:opacity-50"
+          className="bg-[var(--bg-btn)] hover:bg-[var(--bg-btn-hover)] text-[var(--text-primary)] rounded-full py-3 font-medium transition mb-4 disabled:opacity-50"
         >
           {carregando ? 'Entrando...' : 'Entrar'}
         </button>
         <p
           onClick={() => setModalRecuperar(true)}
-          className="text-gray-400 text-sm text-center cursor-pointer hover:text-white transition"
+          className="text-[var(--text-secondary)] text-sm text-center cursor-pointer hover:text-[var(--text-primary)] transition"
         >
           Esqueci minha senha
         </p>
@@ -97,10 +102,10 @@ export default function LoginPage() {
 
       {modalRecuperar && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-[#1a1d27] border border-gray-700 rounded-2xl p-8 w-full max-w-sm">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-8 w-full max-w-sm">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-white text-lg font-semibold">Recuperar senha</h2>
-              <button onClick={handleFecharModal} className="text-gray-400 hover:text-white transition">
+              <h2 className="text-[var(--text-primary)] text-lg font-semibold">Recuperar senha</h2>
+              <button onClick={handleFecharModal} className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition">
                 <X size={20} />
               </button>
             </div>
@@ -108,10 +113,10 @@ export default function LoginPage() {
             {sucessoRecuperar ? (
               <div className="text-center">
                 <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-green-400 text-xl">✓</span>
+                  <span className="text-green-500 text-xl">✓</span>
                 </div>
-                <p className="text-white font-medium mb-2">Email enviado!</p>
-                <p className="text-gray-400 text-sm mb-6">
+                <p className="text-[var(--text-primary)] font-medium mb-2">Email enviado!</p>
+                <p className="text-[var(--text-secondary)] text-sm mb-6">
                   Se seu email estiver correto, você irá receber em sua caixa de entrada as instruções para redefinir sua senha.
                 </p>
                 <button
@@ -123,7 +128,7 @@ export default function LoginPage() {
               </div>
             ) : (
               <>
-                <p className="text-gray-400 text-sm mb-4">
+                <p className="text-[var(--text-secondary)] text-sm mb-4">
                   Digite seu email e enviaremos um link para redefinir sua senha.
                 </p>
                 <input
@@ -132,7 +137,7 @@ export default function LoginPage() {
                   onChange={e => setEmailRecuperar(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleRecuperarSenha()}
                   placeholder="seu@email.com"
-                  className="w-full bg-[#0f1117] text-white placeholder-gray-600 rounded-xl px-4 py-3 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition mb-4"
+                  className="w-full bg-[var(--bg-input)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl px-4 py-3 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition mb-4"
                 />
                 <button
                   onClick={handleRecuperarSenha}

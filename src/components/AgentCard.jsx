@@ -9,23 +9,23 @@ export default function AgentCard({ agent, onClick, carregando }) {
   return (
     <div
       onClick={onClick}
-      className="bg-[#1a1d27] hover:bg-[#22263a] border border-gray-700 hover:border-[#00bcd4] rounded-xl p-6 cursor-pointer transition-all"
+      className="bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] border border-[var(--border)] hover:border-[#00bcd4] rounded-xl p-6 cursor-pointer transition-all"
     >
       <div className="flex gap-2 mb-4">
-        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[#00bcd4]">
+        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[var(--text-accent)]">
           <PenLine size={16} />
         </div>
-        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[#00bcd4]">
+        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[var(--text-accent)]">
           <FileText size={16} />
         </div>
-        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[#00bcd4]">
+        <div className="w-8 h-8 rounded-lg bg-[#00bcd4]/20 flex items-center justify-center text-[var(--text-accent)]">
           <MessageSquare size={16} />
         </div>
       </div>
-      <h3 className="text-white font-semibold mb-1">
+      <h3 className="text-[var(--text-primary)] font-semibold mb-1">
         {carregando ? 'Iniciando...' : agent.name}
       </h3>
-      <p className="text-gray-400 text-sm">{descricoes[agent.agent_type]}</p>
+      <p className="text-[var(--text-secondary)] text-sm">{descricoes[agent.agent_type]}</p>
     </div>
   )
 }

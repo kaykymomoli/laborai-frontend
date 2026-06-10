@@ -70,66 +70,66 @@ export default function AdminPage() {
   )
 
   return (
-    <div className="flex flex-col h-screen bg-[#13151f]">
+    <div className="flex flex-col h-screen bg-[var(--bg-page)]">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar onSelectSession={() => navigate('/chat')} />
         <main className="flex-1 overflow-y-auto p-10">
 
-          <h1 className="text-white text-2xl font-semibold mb-8 flex items-center gap-3">
-            <Shield size={24} className="text-[#00bcd4]" />
+          <h1 className="text-[var(--text-primary)] text-2xl font-semibold mb-8 flex items-center gap-3">
+            <Shield size={24} className="text-[var(--text-accent)]" />
             Painel de Administração
           </h1>
 
-          <div className="bg-[#1a1d27] border border-gray-700 rounded-2xl p-6 mb-8 max-w-2xl">
-            <h2 className="text-white font-semibold mb-4 flex items-center gap-2">
-              <UserPlus size={18} className="text-[#00bcd4]" />
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 mb-8 max-w-2xl">
+            <h2 className="text-[var(--text-primary)] font-semibold mb-4 flex items-center gap-2">
+              <UserPlus size={18} className="text-[var(--text-accent)]" />
               Criar novo usuário
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Nome completo *</label>
+                <label className="text-[var(--text-secondary)] text-xs mb-1.5 block">Nome completo *</label>
                 <input
                   value={form.nome}
                   onChange={e => setForm({ ...form, nome: e.target.value })}
                   placeholder="Nome do usuário"
-                  className="w-full bg-[#0f1117] text-white placeholder-gray-600 rounded-xl px-4 py-2.5 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition"
+                  className="w-full bg-[var(--bg-input)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl px-4 py-2.5 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
                 />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Email *</label>
+                <label className="text-[var(--text-secondary)] text-xs mb-1.5 block">Email *</label>
                 <input
                   type="email"
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
                   placeholder="email@exemplo.com"
-                  className="w-full bg-[#0f1117] text-white placeholder-gray-600 rounded-xl px-4 py-2.5 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition"
+                  className="w-full bg-[var(--bg-input)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl px-4 py-2.5 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
                 />
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Senha *</label>
+                <label className="text-[var(--text-secondary)] text-xs mb-1.5 block">Senha *</label>
                 <div className="relative">
                   <input
                     type={mostrarSenha ? 'text' : 'password'}
                     value={form.password}
                     onChange={e => setForm({ ...form, password: e.target.value })}
                     placeholder="Senha inicial"
-                    className="w-full bg-[#0f1117] text-white placeholder-gray-600 rounded-xl px-4 pr-10 py-2.5 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition"
+                    className="w-full bg-[var(--bg-input)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl px-4 pr-10 py-2.5 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
                   />
                   <button
                     onClick={() => setMostrarSenha(!mostrarSenha)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   >
                     {mostrarSenha ? <EyeOff size={15} /> : <Eye size={15} />}
                   </button>
                 </div>
               </div>
               <div>
-                <label className="text-gray-400 text-xs mb-1.5 block">Perfil</label>
+                <label className="text-[var(--text-secondary)] text-xs mb-1.5 block">Perfil</label>
                 <select
                   value={form.role}
                   onChange={e => setForm({ ...form, role: e.target.value })}
-                  className="w-full bg-[#0f1117] text-white rounded-xl px-4 py-2.5 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition"
+                  className="w-full bg-[var(--bg-input)] text-[var(--text-primary)] rounded-xl px-4 py-2.5 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
                 >
                   <option value="user">Usuário</option>
                   <option value="admin">Administrador</option>
@@ -137,8 +137,8 @@ export default function AdminPage() {
               </div>
             </div>
 
-            {erro && <p className="text-red-400 text-sm mb-3">{erro}</p>}
-            {sucesso && <p className="text-green-400 text-sm mb-3">{sucesso}</p>}
+            {erro && <p className="text-red-500 text-sm mb-3">{erro}</p>}
+            {sucesso && <p className="text-green-500 text-sm mb-3">{sucesso}</p>}
 
             <button
               onClick={handleCriarUsuario}
@@ -149,54 +149,54 @@ export default function AdminPage() {
             </button>
           </div>
 
-          <div className="bg-[#1a1d27] border border-gray-700 rounded-2xl p-6 max-w-4xl">
+          <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 max-w-4xl">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-white font-semibold flex items-center gap-2">
-                <Users size={18} className="text-[#00bcd4]" />
+              <h2 className="text-[var(--text-primary)] font-semibold flex items-center gap-2">
+                <Users size={18} className="text-[var(--text-accent)]" />
                 Usuários cadastrados
               </h2>
               <div className="relative">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input
                   value={buscaUsuario}
                   onChange={e => setBuscaUsuario(e.target.value)}
                   placeholder="Buscar por nome ou email"
-                  className="bg-[#0f1117] text-white placeholder-gray-600 rounded-xl pl-8 pr-4 py-2 text-sm outline-none border border-gray-700 focus:border-[#00bcd4] transition w-64"
+                  className="bg-[var(--bg-input)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-xl pl-8 pr-4 py-2 text-sm outline-none border border-[var(--border)] focus:border-[#00bcd4] transition w-64"
                 />
               </div>
             </div>
 
             {carregando ? (
-              <p className="text-gray-400 text-sm">Carregando...</p>
+              <p className="text-[var(--text-secondary)] text-sm">Carregando...</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-700">
-                      <th className="text-left text-gray-400 font-medium pb-3 pr-4">Nome</th>
-                      <th className="text-left text-gray-400 font-medium pb-3 pr-4">Email</th>
-                      <th className="text-left text-gray-400 font-medium pb-3 pr-4">Perfil</th>
-                      <th className="text-left text-gray-400 font-medium pb-3 pr-4">Último acesso</th>
-                      <th className="text-left text-gray-400 font-medium pb-3"></th>
+                    <tr className="border-b border-[var(--border)]">
+                      <th className="text-left text-[var(--text-secondary)] font-medium pb-3 pr-4">Nome</th>
+                      <th className="text-left text-[var(--text-secondary)] font-medium pb-3 pr-4">Email</th>
+                      <th className="text-left text-[var(--text-secondary)] font-medium pb-3 pr-4">Perfil</th>
+                      <th className="text-left text-[var(--text-secondary)] font-medium pb-3 pr-4">Último acesso</th>
+                      <th className="text-left text-[var(--text-secondary)] font-medium pb-3"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {usuariosFiltrados.map(u => (
-                      <tr key={u.id} className="border-b border-gray-800 hover:bg-[#22263a] transition">
-                        <td className="py-3 pr-4 text-white">{u.nome || '—'}</td>
-                        <td className="py-3 pr-4 text-gray-300">{u.email}</td>
+                      <tr key={u.id} className="border-b border-[var(--border-subtle)] hover:bg-[var(--bg-hover)] transition">
+                        <td className="py-3 pr-4 text-[var(--text-primary)]">{u.nome || '—'}</td>
+                        <td className="py-3 pr-4 text-[var(--text-secondary)]">{u.email}</td>
                         <td className="py-3 pr-4">
-                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${u.role === 'admin' ? 'bg-[#00bcd4]/20 text-[#00bcd4]' : 'bg-gray-700 text-gray-300'}`}>
+                          <span className={`text-xs px-2 py-1 rounded-full font-medium ${u.role === 'admin' ? 'bg-[#00bcd4]/20 text-[var(--text-accent)]' : 'bg-[var(--bg-hover)] text-[var(--text-secondary)]'}`}>
                             {u.role === 'admin' ? 'Admin' : 'Usuário'}
                           </span>
                         </td>
-                        <td className="py-3 pr-4 text-gray-400 text-xs">
+                        <td className="py-3 pr-4 text-[var(--text-muted)] text-xs">
                           {u.last_sign_in_at ? new Date(u.last_sign_in_at).toLocaleDateString('pt-BR') : '—'}
                         </td>
                         <td className="py-3">
                           <button
                             onClick={() => handleDeletarUsuario(u.id)}
-                            className="text-gray-500 hover:text-red-400 transition"
+                            className="text-[var(--text-muted)] hover:text-red-500 transition"
                           >
                             <Trash2 size={16} />
                           </button>
@@ -205,7 +205,7 @@ export default function AdminPage() {
                     ))}
                     {usuariosFiltrados.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="py-6 text-center text-gray-500 text-sm">
+                        <td colSpan={5} className="py-6 text-center text-[var(--text-muted)] text-sm">
                           Nenhum usuário encontrado.
                         </td>
                       </tr>

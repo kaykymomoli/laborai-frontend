@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import supabase from '../services/supabase'
+import useStore from '../store/useStore'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function ResetPasswordPage() {
   const [senha, setSenha] = useState('')
@@ -11,6 +13,7 @@ export default function ResetPasswordPage() {
   const [erro, setErro] = useState('')
   const [sucesso, setSucesso] = useState(false)
   const navigate = useNavigate()
+  const theme = useStore(state => state.theme)
 
   useEffect(() => {
     supabase.auth.onAuthStateChange(async (event) => {
@@ -32,18 +35,21 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="flex h-screen w-screen">
-      <div className="flex flex-col justify-center w-full max-w-lg px-16 bg-[#0f1117]">
-        <div className="mb-10">
-          <img src="/logo.png" alt="LaborAI" className="h-10" />
+      <div className="flex flex-col justify-center w-full max-w-lg px-16 bg-[var(--bg-main)] relative">
+        <div className="absolute top-4 right-4">
+          <ThemeToggle />
         </div>
-        <h1 className="text-white text-3xl font-semibold mb-1">Nova senha</h1>
-        <div className="w-16 h-0.5 bg-white mb-6"></div>
-        <p className="text-gray-400 text-sm mb-8">Digite sua nova senha abaixo.</p>
+        <div className="mb-10">
+          <img src={theme === 'dark' ? '/logo.png' : '/logo-dark.png'} alt="LaborAI" className="h-10" />
+        </div>
+        <h1 className="text-[var(--text-primary)] text-3xl font-semibold mb-1">Nova senha</h1>
+        <div className="w-16 h-0.5 bg-[var(--text-primary)] mb-6"></div>
+        <p className="text-[var(--text-secondary)] text-sm mb-8">Digite sua nova senha abaixo.</p>
 
         {sucesso ? (
           <div className="text-center">
-            <p className="text-green-400 font-medium mb-2">Senha redefinida com sucesso!</p>
-            <p className="text-gray-400 text-sm">Redirecionando para o login...</p>
+            <p className="text-green-500 font-medium mb-2">Senha redefinida com sucesso!</p>
+            <p className="text-[var(--text-secondary)] text-sm">Redirecionando para o login...</p>
           </div>
         ) : (
           <>
@@ -53,11 +59,11 @@ export default function ResetPasswordPage() {
                 placeholder="Nova senha"
                 value={senha}
                 onChange={e => setSenha(e.target.value)}
-                className="w-full bg-[#1a1d27] text-white placeholder-gray-500 rounded-full px-6 py-3 outline-none border border-transparent focus:border-[#00bcd4] transition"
+                className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full px-6 py-3 outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
               />
               <button
                 onClick={() => setMostrarSenha(!mostrarSenha)}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)] transition"
               >
                 {mostrarSenha ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -69,14 +75,14 @@ export default function ResetPasswordPage() {
                 value={confirmarSenha}
                 onChange={e => setConfirmarSenha(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleRedefinir()}
-                className="w-full bg-[#1a1d27] text-white placeholder-gray-500 rounded-full px-6 py-3 outline-none border border-transparent focus:border-[#00bcd4] transition"
+                className="w-full bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-muted)] rounded-full px-6 py-3 outline-none border border-[var(--border)] focus:border-[#00bcd4] transition"
               />
             </div>
-            {erro && <p className="text-red-400 text-sm mb-4">{erro}</p>}
+            {erro && <p className="text-red-500 text-sm mb-4">{erro}</p>}
             <button
               onClick={handleRedefinir}
               disabled={salvando}
-              className="bg-[#2a2d3a] hover:bg-[#353849] text-white rounded-full py-3 font-medium transition disabled:opacity-50"
+              className="bg-[var(--bg-btn)] hover:bg-[var(--bg-btn-hover)] text-[var(--text-primary)] rounded-full py-3 font-medium transition disabled:opacity-50"
             >
               {salvando ? 'Salvando...' : 'Redefinir senha'}
             </button>

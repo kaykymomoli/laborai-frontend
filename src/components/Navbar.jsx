@@ -4,10 +4,12 @@ import { LayoutGrid, ChevronDown, LogOut, User, Shield } from 'lucide-react'
 import useStore from '../store/useStore'
 import supabase from '../services/supabase'
 import ProfileModal from './ProfileModal'
+import ThemeToggle from './ThemeToggle'
 
 export default function Navbar() {
   const navigate = useNavigate()
   const logout = useStore(state => state.logout)
+  const theme = useStore(state => state.theme)
   const [usuario, setUsuario] = useState(null)
   const [avatarUrl, setAvatarUrl] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -56,73 +58,77 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="flex items-center justify-between px-6 py-3 bg-[#0f1117] border-b border-gray-800">
+      <nav className="flex items-center justify-between px-6 py-3 bg-[var(--bg-main)] border-b border-[var(--border-subtle)]">
         <div className="flex items-center gap-8">
           <img
-            src="/logo.png"
+            src={theme === 'dark' ? '/logo.png' : '/logo-dark.png'}
             alt="LaborAI"
             className="h-7 cursor-pointer"
             onClick={() => navigate('/home')}
           />
           <button
             onClick={() => navigate('/home')}
-            className="flex items-center gap-2 font-medium px-4 py-2 rounded-lg border border-[#00bcd4] text-[#00bcd4] hover:bg-[#00bcd4]/10 transition text-base"
+            className="flex items-center gap-2 font-medium px-4 py-2 rounded-lg border border-[#00bcd4] text-[var(--text-accent)] hover:bg-[#00bcd4]/10 transition text-base"
           >
             <LayoutGrid size={18} />
             Assistentes
           </button>
         </div>
 
-        <div className="relative" ref={menuRef}>
-          <button
-            onClick={() => setMenuAberto(!menuAberto)}
-            className="flex items-center gap-2 hover:opacity-80 transition"
-          >
-            <div className="w-9 h-9 rounded-full bg-[#00bcd4] flex items-center justify-center text-[#0f1117] font-bold text-sm overflow-hidden">
-              {avatarUrl
-                ? <img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
-                : getIniciais()
-              }
-            </div>
-            <ChevronDown size={14} className="text-gray-400" />
-          </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
 
-          {menuAberto && (
-            <div className="absolute right-0 mt-2 w-52 bg-[#1a1d27] border border-gray-700 rounded-xl shadow-lg z-50 overflow-hidden">
-              <div className="px-4 py-3 border-b border-gray-700">
-                <p className="text-white text-sm font-medium truncate">
-                  {usuario?.user_metadata?.full_name || usuario?.email}
-                </p>
-                <p className="text-gray-500 text-xs mt-0.5 truncate">{usuario?.email}</p>
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setMenuAberto(!menuAberto)}
+              className="flex items-center gap-2 hover:opacity-80 transition"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#00bcd4] flex items-center justify-center text-[#0f1117] font-bold text-sm overflow-hidden">
+                {avatarUrl
+                  ? <img src={avatarUrl} alt="avatar" className="w-full h-full object-cover" />
+                  : getIniciais()
+                }
               </div>
+              <ChevronDown size={14} className="text-[var(--text-muted)]" />
+            </button>
 
-              {isAdmin && (
+            {menuAberto && (
+              <div className="absolute right-0 mt-2 w-52 bg-[var(--bg-card)] border border-[var(--border)] rounded-xl shadow-lg z-50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-[var(--border)]">
+                  <p className="text-[var(--text-primary)] text-sm font-medium truncate">
+                    {usuario?.user_metadata?.full_name || usuario?.email}
+                  </p>
+                  <p className="text-[var(--text-muted)] text-xs mt-0.5 truncate">{usuario?.email}</p>
+                </div>
+
+                {isAdmin && (
+                  <button
+                    onClick={() => { setMenuAberto(false); navigate('/admin') }}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-accent)] hover:bg-[var(--bg-hover)] transition"
+                  >
+                    <Shield size={16} />
+                    Painel Admin
+                  </button>
+                )}
+
                 <button
-                  onClick={() => { setMenuAberto(false); navigate('/admin') }}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#00bcd4] hover:bg-[#22263a] transition"
+                  onClick={() => { setMenuAberto(false); setModalAberto(true) }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] transition"
                 >
-                  <Shield size={16} />
-                  Painel Admin
+                  <User size={16} />
+                  Editar perfil
                 </button>
-              )}
 
-              <button
-                onClick={() => { setMenuAberto(false); setModalAberto(true) }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:bg-[#22263a] hover:text-white transition"
-              >
-                <User size={16} />
-                Editar perfil
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-400 hover:bg-[#22263a] hover:text-red-300 transition"
-              >
-                <LogOut size={16} />
-                Sair
-              </button>
-            </div>
-          )}
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-500 hover:bg-[var(--bg-hover)] hover:text-red-600 transition"
+                >
+                  <LogOut size={16} />
+                  Sair
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
